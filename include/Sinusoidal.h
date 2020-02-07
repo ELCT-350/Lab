@@ -1,29 +1,25 @@
 #pragma once
-
-double sinusoidal(double time, double amplitude, double frequency, double phase, double offset);
+#include "SignalBlock.h"
 
 namespace Leonard
 {
-  class Sinusoidal
+  class Sinusoidal : public ELCT350::SignalBlock
   {
   public:
+    enum Parameters : size_t
+    {
+      Amplitude,
+      Frequency,
+      Phase,
+      Offset
+    };
+
+    enum Ports : size_t
+    {
+      Output
+    };
+
     Sinusoidal(double amplitude, double frequency, double phase, double offset);
-
-    double getValue(double time);
-
-    virtual int getType() { return 1; }
-  private:
-    double _amplitude;
-    double _frequency;
-    double _phase;
-    double _offset;
-  };
-
-  class SinusoidalInheritance : public Sinusoidal
-  {
-  public:
-    SinusoidalInheritance() : Sinusoidal(1, 1, 1, 1) {};
-
-    virtual int getType() override { return 2; }
+    virtual void step(double time, double timeStep) override;
   };
 }

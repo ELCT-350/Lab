@@ -11,12 +11,17 @@ double sinusoidal(double time, double amplitude, double frequency, double phase,
 }
 
 Sinusoidal::Sinusoidal(double amplitude, double frequency, double phase, double offset)
-          : _amplitude(amplitude), _frequency(frequency * 2.0 * 3.14), _phase(phase * 3.14 / 180.0),
-            _offset(offset)
+          : SignalBlock(4, 1)
 {
+  setParameter(Amplitude, amplitude);
+  setParameter(Frequency, frequency * 2.0 * 3.14);
+  setParameter(Phase, phase * 3.14 / 180.0);
+  setParameter(Offset, offset);
 }
 
-double Sinusoidal::getValue(double time)
+void Sinusoidal::step(double time, double timeStep)
 {
-  return _amplitude * sin(_frequency * time + _phase) + _offset;
+  setPortValue(Output, getParameter(Amplitude) *
+                       sin(getParameter(Frequency) * time + getParameter(Phase)) +
+                       getParameter(Offset));
 }
