@@ -15,4 +15,12 @@ endif()
 
 project(ELCT350)
 
-add_executable(Lab1 main.cpp)
+set(SIMULATOR_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+file(GLOB_RECURSE SIMULATOR_SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
+file(GLOB_RECURSE SIMULATOR_HEADERS ${SIMULATOR_INCLUDE}/*.h)
+
+add_executable(Simulator ${SIMULATOR_SOURCE} ${SIMULATOR_HEADERS})
+target_include_directories(Simulator PRIVATE ${SIMULATOR_INCLUDE})
+add_custom_command(TARGET Simulator POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy_directory
+                   "${CMAKE_CURRENT_SOURCE_DIR}/config" "$<TARGET_FILE_DIR:Simulator>/config")
